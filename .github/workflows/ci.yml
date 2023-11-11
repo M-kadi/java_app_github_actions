@@ -31,18 +31,23 @@ jobs:
     - name: Run chmod to make gradlew executable
       run: chmod +x ./gradlew
     - name: Build with Gradle
-      # uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
-      # with:
-      #   arguments: build
-      run: ./gradlew build
-
-    - name: Build and Push Docker Image
-      uses: mr-smithers-excellent/docker-build-push@v6
+      uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
       with:
-        image: mohammedkadi/java_app_github_actions
-        registry: docker.io
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+        arguments: build
+      # run: ./gradlew build
+
+  - uses: actions/upload-artifact@v3
+    with:
+      name: Package
+      path: build/libs
+      
+    # - name: Build and Push Docker Image
+    #   uses: mr-smithers-excellent/docker-build-push@v6
+    #   with:
+    #     image: mohammedkadi/java_app_github_actions
+    #     registry: docker.io
+    #     username: ${{ secrets.DOCKER_USERNAME }}
+    #     password: ${{ secrets.DOCKER_PASSWORD }}
   
   # publish:
       # needs: build
